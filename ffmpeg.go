@@ -20,6 +20,22 @@ type Size struct {
   Height uint16
 }
 
+func NewSize(s string) (*Size, error) {
+  sizearr      := strings.Split(s, "x")
+
+  width, err_w := strconv.Atoi(sizearr[0])
+  if err_w != nil {
+    return nil, err_w
+  }
+
+  height, err_h := strconv.Atoi(sizearr[1])
+  if err_h != nil {
+    return nil, err_h
+  }
+
+  return &Size{uint16(width), uint16(height)}
+}
+
 func (s *Size)String() string {
   return fmt.Sprintf("%dx%d",s.Width, s.Height)
 }
@@ -120,9 +136,21 @@ func (s *Stream) toFFmpegOptionString() (string) {
 }
 
 type VideoFilter struct {
+  Id      string
+  Name    string
+  Values  []string
+  Inputs  []string
+  Outputs []string
+  Filter  *VideoFilter
 }
 
 type AudioFilter struct {
+  Id      string
+  Name    string
+  Values  []string
+  Inputs  []string
+  Outputs []string
+  Filter  *VideoFilter
 }
 
 type VideoSettings struct {
